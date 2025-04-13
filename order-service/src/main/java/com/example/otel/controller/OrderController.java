@@ -21,10 +21,10 @@ public class OrderController {
             checkStock();
             callPaymentAPI();
             saveOrder();
-            return ResponseEntity.ok("🛒 Order complete!");
+            return ResponseEntity.ok("Order complete!");
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("❌ 주문 실패: " + e.getMessage());
+            return ResponseEntity.status(500).body("주문 실패: " + e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class OrderController {
             }
 
         } catch (Exception e) {
-            span.setStatus(StatusCode.ERROR, "결제 실패");
+            span.setStatus(StatusCode.ERROR, "결제 실패 : 시간 초과");
             span.recordException(e);
             throw new RuntimeException("Payment service failed", e);
         }
@@ -65,6 +65,7 @@ public class OrderController {
     public void saveOrder() {
         try {
             Thread.sleep(30);
+            Span.current().setStatus(StatusCode.OK); // ✅ 여기
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

@@ -26,10 +26,10 @@ public class PayController {
                 throw new RuntimeException("응답 지연: " + duration + "ms");
             }
 
-            return ResponseEntity.ok("💳 결제 성공!");
+            return ResponseEntity.ok("결제 성공!");
 
         } catch (Exception e) {
-            span.setStatus(StatusCode.ERROR, "결제 실패");
+            span.setStatus(StatusCode.ERROR, "결제 실패 : 시간 초과");
             span.recordException(e);
             return ResponseEntity.status(500).body("❌ 결제 실패: " + e.getMessage());
         }
