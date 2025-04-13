@@ -1,30 +1,37 @@
 package com.example.otel.controller;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class otelController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @GetMapping("/hello")
-    @WithSpan
-    public String hello() {
-        return "👋 Hello from OpenTelemetry!";
-    }
-
     @GetMapping("/order")
     @WithSpan
-    public String order() {
-        checkStock();
-        callPaymentAPI();
-        saveOrder();
-        return "🛒 Order complete!";
+    public ResponseEntity<String> order(@RequestParam(defaultValue = "success") String caseType) {
+        try {
+            checkStock();
+
+            switch (caseType) {
+                case "fail" -> callPaymentAPI(false, false);       // 빠른 실패
+                case "delayed" -> callPaymentAPI(true, false);     // 지연 후 실패
+                default -> callPaymentAPI(true, true);             // 성공
+            }
+
+            saveOrder();
+            return ResponseEntity.ok("🛒 Order complete!");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("❌ 주문 실패: " + e.getMessage());
+        }
     }
 
     @WithSpan("check-stock")
@@ -37,10 +44,21 @@ public class otelController {
     }
 
     @WithSpan("call-payment-api")
-    public void callPaymentAPI() {
+    public void callPaymentAPI(boolean delay, boolean success) {
         Span span = Span.current();
         try {
-            restTemplate.getForObject("https://httpstat.us/500", String.class);
+            String url = "https://httpstat.us/";
+            if (success) {
+                url += "200";
+            } else {
+                url += delay ? "500?sleep=300" : "500"; // 지연 + 에러 or 즉시 에러
+            }
+
+            restTemplate.getForObject(url, String.class);
+
+            if (!success) {
+                throw new RuntimeException("에러 발생!");
+            }
         } catch (Exception e) {
             span.setStatus(StatusCode.ERROR, "결제 실패");
             span.recordException(e);
@@ -56,6 +74,4 @@ public class otelController {
             Thread.currentThread().interrupt();
         }
     }
-
-
 }
