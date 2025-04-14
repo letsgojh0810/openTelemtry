@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OTel.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OTel.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.OTel.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.OTel.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.OTel.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.OTel.main~1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/openTelemtry.iml" filepath="$PROJECT_DIR$/.idea/openTelemtry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/payment-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/payment-service.main.iml" />
     </modules>
   </component>
 </project>
