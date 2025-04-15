@@ -20,11 +20,11 @@ public class OrderController {
 
     @GetMapping("/order")
     @WithSpan
-    public ResponseEntity<String> order(@RequestParam(defaultValue = "0") int delay) {
+    public ResponseEntity<String> order(@RequestParam String productName, @RequestParam(defaultValue = "0") int delay) {
         Span span = Span.current();
 
         try {
-            orderService.checkStock();
+            orderService.checkStock(productName); // 🟡 수정됨
             orderService.callPaymentAPI(delay);
             orderService.saveOrder();
 
@@ -37,5 +37,6 @@ public class OrderController {
             return ResponseEntity.status(500).body("주문 실패: " + e.getMessage());
         }
     }
+
 
 }
