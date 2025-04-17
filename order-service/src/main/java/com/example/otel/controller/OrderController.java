@@ -18,13 +18,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    // 루트 스팬
     @GetMapping("/order")
     @WithSpan
     public ResponseEntity<String> order(@RequestParam String productName, @RequestParam(defaultValue = "0") int delay) {
         Span span = Span.current();
 
         try {
-            orderService.checkStock(productName); // 🟡 수정됨
+            orderService.checkStock(productName);
             orderService.callPaymentAPI(delay);
             orderService.saveOrder();
 
