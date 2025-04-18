@@ -59,7 +59,7 @@ public class OrderService {
 
             span.setStatus(StatusCode.OK);
         } catch (Exception e) {
-            span.setStatus(StatusCode.ERROR, "결제 실패");
+            span.setStatus(StatusCode.ERROR, "결제 실패 : 시간 초과");
             span.recordException(e);
             throw new RuntimeException("Payment service failed", e);
         }
