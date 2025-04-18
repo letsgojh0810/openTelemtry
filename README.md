@@ -1,5 +1,9 @@
 # 🌐 OpenTelemetry 기반 분산 트레이싱 데모 프로젝트
 
+
+
+<br>
+
 ## 🧠 프로젝트 소개
 
 이 프로젝트는 **OpenTelemetry**를 활용한 분산 추적 시스템을 직접 구성하고,  
@@ -7,6 +11,8 @@
 실제 서비스 환경에서 장애 추적, 병목 탐지, 흐름 파악을 얼마나 쉽게 할 수 있는지를 시각화하여 보여주는 것이 목표입니다.
 
 ---
+
+<br>
 
 ## 🏗️ 아키텍처 구성
 
@@ -21,8 +27,7 @@
 <br>
 
 
-![alt text](image.png)
-
+<img src="image.png" alt="alt text" style="margin-left:150px;" width="600"/>
 
 ---
 
